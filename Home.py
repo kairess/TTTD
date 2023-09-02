@@ -2,7 +2,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 import openai
 import pandas as pd
-import ast
+import json
 import plotly.express as px
 from prompts import *
 
@@ -156,14 +156,13 @@ if submit and name and job:
 
             print(list_content)
 
-            import json
-
             list_content = json.loads(list_content)
 
             df = pd.DataFrame(dict(
                 r=list_content["score"],
                 theta=["직업적합도", "난이도", "소요비용", "소요기간", "예상수입", "업무강도"]))
             fig = px.line_polar(df, r="r", theta="theta", line_close=True)
+            fig.update_traces(fill="toself")
             st.write(fig)
             st.markdown(list_content["description"])
 
@@ -196,3 +195,5 @@ if submit and name and job:
             )
             image_url = dalle_response['data'][0]['url']
             st.image(image_url)
+
+    st.button("친구에게 공유하기")
