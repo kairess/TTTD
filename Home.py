@@ -1,7 +1,5 @@
 import streamlit as st
 import streamlit.components.v1 as components
-from streamlit_pills import pills
-from streamlit_extras.badges import badge
 import openai
 import pandas as pd
 import ast
@@ -57,8 +55,6 @@ with st.sidebar:
         submit = st.form_submit_button("알아보기")
 
 ##### Main #####
-answer1 = st.empty()
-
 gpt_prompt = [{
     "role": "system",
     "content": system_prompt
@@ -70,6 +66,9 @@ if submit and name and job:
 
     ### Answer 1 ###
     if is_answer[0]:
+        st.subheader(f"{name}님의 꿈을 향한 티켓", divider=True)
+        answer1 = st.empty()
+
         with st.spinner("꿈으로 향하는 티켓을 발행 중이에요..."):
             new_gpt_prompt.append({
                 "role": "user",
@@ -96,6 +95,7 @@ if submit and name and job:
 
     ### Answer 2 ###
     if is_answer[1]:
+        st.subheader(f"{name}님의 꿈으로 향하는 로드맵", divider=True)
         with st.spinner("꿈으로 향하는 로드맵을 그리는 중이에요..."):
             new_gpt_prompt.append({
                 "role": "user",
@@ -118,7 +118,6 @@ if submit and name and job:
                 mermaid_content = gpt_response2[mermaid_start:mermaid_end].strip()
             else:
                 st.markdown(f"No mermaid content found!\n\n```{gpt_response2}```")
-                st.stop()
 
             mermaid(mermaid_content)
 
@@ -129,6 +128,7 @@ if submit and name and job:
 
     ### Answer 3 ###
     if is_answer[2]:
+        st.subheader(f"AI가 분석한 {job}", divider=True)
         with st.spinner("꿈으로 향하는 능력치를 계산하는 중이에요..."):
             new_gpt_prompt.append({
                 "role": "user",
@@ -151,7 +151,6 @@ if submit and name and job:
                 list_conent = gpt_response3[list_start:list_end].strip()
             else:
                 st.markdown(f"No Python List content found!\n\n```{gpt_response3}```")
-                st.stop()
 
             df = pd.DataFrame(dict(
                 r=ast.literal_eval(list_conent),
@@ -161,6 +160,7 @@ if submit and name and job:
 
     ### Answer 4 ###
     if is_answer[3]:
+        st.subheader(f"AI가 그린 {name}님의 미래 모습", divider=True)
         with st.spinner("미래의 당신을 그리는 중이에요..."):
             gpt_prompt_dalle = [{
                 "role": "system",
