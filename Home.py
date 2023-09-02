@@ -35,7 +35,7 @@ config = load_config()
 openai.api_key = config["openai_api_key"]
 
 ### MAIN ###
-st.header("Ticket to the Dream", divider='rainbow')
+st.header("Ticket to the Dream 🎫✨", divider='rainbow')
 
 with st.expander("서비스 소개", expanded=True):
     st.write("""Ticket to the Dream 서비스는 당신의 꿈의 이루기 위해 안내를 주는 도우미입니다.\n\n왼쪽 사이드바에 여러분의 정보를 입력해주세요.""")
@@ -66,7 +66,7 @@ if submit and name and job:
 
     ### Answer 1 ###
     if is_answer[0]:
-        st.subheader(f"{name}님의 꿈을 향한 티켓", divider=True)
+        st.subheader(f"{name}님의 꿈을 향한 티켓 🎫🌈", divider=True)
         answer1 = st.empty()
 
         with st.spinner("꿈으로 향하는 티켓을 발행 중이에요..."):
@@ -95,7 +95,7 @@ if submit and name and job:
 
     ### Answer 2 ###
     if is_answer[1]:
-        st.subheader(f"{name}님의 꿈으로 향하는 로드맵", divider=True)
+        st.subheader(f"{name}님의 꿈으로 향하는 로드맵 🗺️🌟", divider=True)
         with st.spinner("꿈으로 향하는 로드맵을 그리는 중이에요..."):
             new_gpt_prompt.append({
                 "role": "user",
@@ -119,8 +119,11 @@ if submit and name and job:
                 mermaid_end = gpt_response2.find(end_keyword, mermaid_start)
                 mermaid_content = gpt_response2[mermaid_start:mermaid_end].strip()
             else:
-                st.markdown(f"No mermaid content found!\n\n```{gpt_response2}```")
+                mermaid_content = gpt_response2
 
+            print(mermaid_content)
+
+            mermaid_content = mermaid_content.replace("mermaid", "")
             mermaid(mermaid_content)
 
             # new_gpt_prompt.append({
@@ -130,7 +133,7 @@ if submit and name and job:
 
     ### Answer 3 ###
     if is_answer[2]:
-        st.subheader(f"AI가 분석한 {job}", divider=True)
+        st.subheader(f"AI가 분석한 {job} 🔍👨‍💼", divider=True)
         with st.spinner("꿈으로 향하는 능력치를 계산하는 중이에요..."):
             new_gpt_prompt.append({
                 "role": "user",
@@ -168,7 +171,7 @@ if submit and name and job:
 
     ### Answer 4 ###
     if is_answer[3]:
-        st.subheader(f"AI가 그린 {name}님의 미래 모습", divider=True)
+        st.subheader(f"AI가 그린 {name}님의 미래 모습 🤖🔮", divider=True)
         with st.spinner("미래의 당신을 그리는 중이에요..."):
             gpt_prompt_dalle = [{
                 "role": "system",
