@@ -4,7 +4,7 @@ from streamlit_pills import pills
 from streamlit_extras.badges import badge
 import openai
 import pandas as pd
-import random
+import ast
 import plotly.express as px
 from prompts import *
 
@@ -72,7 +72,8 @@ if submit and name and job:
         gpt_response1 = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=new_gpt_prompt,
-            stream=True)
+            stream=True,
+            max_tokens=1000)
 
         collected_messages = []
         for chunk in gpt_response1:
@@ -87,43 +88,58 @@ if submit and name and job:
             "content": gpt_response1,
         })
 
-    ### Answer 2 ###
-    with st.spinner("꿈으로 향하는 로드맵을 그리는 중이에요..."):
+    # ### Answer 2 ###
+    # with st.spinner("꿈으로 향하는 로드맵을 그리는 중이에요..."):
+    #     new_gpt_prompt.append({
+    #         "role": "user",
+    #         "content": new_user_prompts[1] % (name, country, age, job, school, mbti),
+    #     })
+
+    #     gpt_response2 = openai.ChatCompletion.create(
+    #         model="gpt-4",
+    #         messages=new_gpt_prompt,
+    #         stream=False)
+
+    #     gpt_response2 = gpt_response2["choices"][0]["message"]["content"]
+
+    #     start_keyword = "```mermaid"
+    #     end_keyword = "```"
+
+    #     # Check if mermaid syntax is present
+    #     if start_keyword in gpt_response2 and end_keyword in gpt_response2:
+    #         # Extract mermaid content
+    #         mermaid_start = gpt_response2.find(start_keyword) + len(start_keyword)
+    #         mermaid_end = gpt_response2.find(end_keyword, mermaid_start)
+    #         mermaid_content = gpt_response2[mermaid_start:mermaid_end].strip()
+    #     else:
+    #         st.markdown(f"No mermaid content found!\n\n```{gpt_response2}```")
+    #         st.stop()
+
+    #     mermaid(mermaid_content)
+
+        # new_gpt_prompt.append({
+        #     "role": "assistant",
+        #     "content": gpt_response2,
+        # })
+
+    ### Answer 3 ###
+    with st.spinner("꿈으로 향하는 능력치를 계산하는 중이에요..."):
         new_gpt_prompt.append({
             "role": "user",
-            "content": new_user_prompts[1] % (name, country, age, job, school, mbti),
+            "content": new_user_prompts[2],
         })
 
-        gpt_response2 = openai.ChatCompletion.create(
-            model="gpt-4",
+        gpt_response3 = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
             messages=new_gpt_prompt,
             stream=False)
 
-        gpt_response2 = gpt_response2["choices"][0]["message"]["content"]
+        gpt_response3 = gpt_response3["choices"][0]["message"]["content"]
 
-        start_keyword = "```mermaid"
-        end_keyword = "```"
+        print(gpt_response3)
 
-        # Check if mermaid syntax is present
-        if start_keyword in gpt_response2 and end_keyword in gpt_response2:
-            # Extract mermaid content
-            mermaid_start = gpt_response2.find(start_keyword) + len(start_keyword)
-            mermaid_end = gpt_response2.find(end_keyword, mermaid_start)
-            mermaid_content = gpt_response2[mermaid_start:mermaid_end].strip()
-        else:
-            st.markdown(f"No mermaid content found!\n\n```{gpt_response2}```")
-            st.stop()
-
-        mermaid(mermaid_content)
-
-
-df = pd.DataFrame(dict(
-r=[random.randint(0,2),
-    random.randint(0,3),
-    random.randint(0,4),
-    random.randint(0,5),
-    random.randint(0,6)],
-theta=["processing cost","mechanical properties","chemical stability",
-        "thermal stability", "device integration"]))
-fig = px.line_polar(df, r="r", theta="theta", line_close=True)
-st.write(fig)
+        df = pd.DataFrame(dict(
+            r=ast.literal_eval(gpt_response3),
+            theta=["직업적합도", "난이도", "소요비용", "소요기간", "예상수입", "업무강도"]))
+        fig = px.line_polar(df, r="r", theta="theta", line_close=True)
+        st.write(fig)
