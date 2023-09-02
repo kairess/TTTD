@@ -33,10 +33,14 @@ def mermaid(code):
         """
     , height=500)
 
-### MAIN ###
 config = load_config()
-
 openai.api_key = config["openai_api_key"]
+
+### MAIN ###
+st.header("Ticket to the Dream", divider='rainbow')
+
+with st.expander("서비스 소개", expanded=True):
+    st.write("""Ticket to the Dream 서비스는 당신의 꿈의 이루기 위해 안내를 주는 도우미입니다.\n\n왼쪽 사이드바에 여러분의 정보를 입력해주세요.""")
 
 ##### Sidebar #####
 with st.sidebar:
@@ -177,7 +181,7 @@ if submit and name and job:
             print(gpt_response4)
 
             dalle_response = openai.Image.create(
-                prompt=f"{gpt_response4}, dream job, happy mood, political cartoon from US news paper, child's drawing, oil painting, low poly, Bill Watterson (Calvin & Hobbes)",
+                prompt=f"a portrait of {gpt_response4}, cheering and friendly mood, cartoon low poly style.",
                 n=1,
                 size="512x512"
             )
