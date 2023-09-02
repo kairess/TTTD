@@ -29,7 +29,7 @@ def mermaid(code):
             mermaid.initialize({{ startOnLoad: true, theme: "dark" }});
         </script>
         """
-    , height=350)
+    , height=500)
 
 ### MAIN ###
 config = load_config()
@@ -100,9 +100,21 @@ if submit and name and job:
             stream=False)
 
         gpt_response2 = gpt_response2["choices"][0]["message"]["content"]
-        print(gpt_response2)
 
-        mermaid(gpt_response2)
+        start_keyword = "```mermaid"
+        end_keyword = "```"
+
+        # Check if mermaid syntax is present
+        if start_keyword in gpt_response2 and end_keyword in gpt_response2:
+            # Extract mermaid content
+            mermaid_start = gpt_response2.find(start_keyword) + len(start_keyword)
+            mermaid_end = gpt_response2.find(end_keyword, mermaid_start)
+            mermaid_content = gpt_response2[mermaid_start:mermaid_end].strip()
+        else:
+            st.markdown(f"No mermaid content found!\n\n```{gpt_response2}```")
+            st.stop()
+
+        mermaid(mermaid_content)
 
 
 df = pd.DataFrame(dict(

@@ -20,7 +20,8 @@ user_prompts = [
 사용자가 원하는 최종 목표를 달성한 후에도 커리어를 개발 시킬 수 있는 방향을 한단계 추가해 사용자가 꿈에 그리는 직업을 달성한 후에 어떻게 커리어를 바른 방향으로 발전 시킬지 판단할 수 있게 돕는다.
 결과물의 언어는 사용자의 국가의 언어에 따라 작성한다.
 
-출력 형식(mermaid char에 바로 입력 될 수 있게 timeline 내용만 출력) : 
+출력 형식(mermaid char에 바로 입력 될 수 있게 timeline 내용만 출력) :
+```mermaid
 timeline
 title {title}
 section {section}
@@ -33,7 +34,7 @@ section {section}
 : {subject} - {content or description, required qualifications, time needed, etc.}
 : {subject} - {content or description, required qualifications, time needed, etc.}
 ...
-
+```
 
 나의 상황과 내가 되고 싶은 직업은 다음과 같다. 내가 이 직업을 가질 수 있는 방법을 제공해줘. 출력은 국가에 맞는 언어로 해줘.
 
