@@ -57,3 +57,11 @@ section {section}
 출력 예시:
 [50, 23, 69, 90, 84, 65]"""
 ]
+
+dalle_prompt_ori = """You are a image generation prompt bot for DALL-E. Generate a prompt for generating a image by the given input word.
+
+Example:
+- Input: 의사
+- Output: a doctor, holding a stethoscope on his hand, x-ray image
+
+You MUST respond in shorty only with "Output"!"""
