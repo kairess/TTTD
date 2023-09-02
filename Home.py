@@ -45,8 +45,8 @@ with st.sidebar:
         job = st.text_input("꿈의 직업")
         name = st.text_input("이름")
         country = st.selectbox("국가", ["한국", "미국", "독일", "베트남"])
-        age = st.slider("나이", 10, 30, 15, 1)
-        school = st.selectbox("학교", ["초등학교", "중학교", "대학교"])
+        age = st.slider("나이", 10, 40, 15, 1)
+        school = st.selectbox("학교", ["초등학교", "중학교", "고등학교", "대학교", "대학원"], index=1)
         mbti = st.selectbox("MBTI", ["ISTJ", "ISFJ", "INFJ", "INTJ", "ISTP", "ISFP", "INFP", "INTP", "ESTP", "ESFP", "ENFP", "ENTP", "ESTJ", "ESFJ", "ENFJ", "ENTJ"])
         submit = st.form_submit_button("알아보기")
 
@@ -72,8 +72,7 @@ if submit and name and job:
         gpt_response1 = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=new_gpt_prompt,
-            stream=True,
-            max_tokens=1000)
+            stream=True)
 
         collected_messages = []
         for chunk in gpt_response1:
@@ -88,39 +87,37 @@ if submit and name and job:
             "content": gpt_response1,
         })
 
-    # ### Answer 2 ###
-    # with st.spinner("꿈으로 향하는 로드맵을 그리는 중이에요..."):
-    #     new_gpt_prompt.append({
-    #         "role": "user",
-    #         "content": new_user_prompts[1] % (name, country, age, job, school, mbti),
-    #     })
+    ### Answer 2 ###
+    with st.spinner("꿈으로 향하는 로드맵을 그리는 중이에요..."):
+        new_gpt_prompt.append({
+            "role": "user",
+            "content": new_user_prompts[1] % (name, country, age, job, school, mbti),
+        })
 
-    #     gpt_response2 = openai.ChatCompletion.create(
-    #         model="gpt-4",
-    #         messages=new_gpt_prompt,
-    #         stream=False)
+        gpt_response2 = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=new_gpt_prompt,
+            stream=False)
 
-    #     gpt_response2 = gpt_response2["choices"][0]["message"]["content"]
+        gpt_response2 = gpt_response2["choices"][0]["message"]["content"]
 
-    #     start_keyword = "```mermaid"
-    #     end_keyword = "```"
+        start_keyword = "```mermaid"
+        end_keyword = "```"
 
-    #     # Check if mermaid syntax is present
-    #     if start_keyword in gpt_response2 and end_keyword in gpt_response2:
-    #         # Extract mermaid content
-    #         mermaid_start = gpt_response2.find(start_keyword) + len(start_keyword)
-    #         mermaid_end = gpt_response2.find(end_keyword, mermaid_start)
-    #         mermaid_content = gpt_response2[mermaid_start:mermaid_end].strip()
-    #     else:
-    #         st.markdown(f"No mermaid content found!\n\n```{gpt_response2}```")
-    #         st.stop()
+        if start_keyword in gpt_response2 and end_keyword in gpt_response2:
+            mermaid_start = gpt_response2.find(start_keyword) + len(start_keyword)
+            mermaid_end = gpt_response2.find(end_keyword, mermaid_start)
+            mermaid_content = gpt_response2[mermaid_start:mermaid_end].strip()
+        else:
+            st.markdown(f"No mermaid content found!\n\n```{gpt_response2}```")
+            st.stop()
 
-    #     mermaid(mermaid_content)
+        mermaid(mermaid_content)
 
-        # new_gpt_prompt.append({
-        #     "role": "assistant",
-        #     "content": gpt_response2,
-        # })
+        new_gpt_prompt.append({
+            "role": "assistant",
+            "content": gpt_response2,
+        })
 
     ### Answer 3 ###
     with st.spinner("꿈으로 향하는 능력치를 계산하는 중이에요..."):
@@ -136,10 +133,19 @@ if submit and name and job:
 
         gpt_response3 = gpt_response3["choices"][0]["message"]["content"]
 
-        print(gpt_response3)
+        start_keyword = "["
+        end_keyword = "]"
+
+        if start_keyword in gpt_response3 and end_keyword in gpt_response3:
+            list_start = gpt_response3.find(start_keyword) + len(start_keyword)
+            list_end = gpt_response3.find(end_keyword, list_start)
+            list_conent = gpt_response3[list_start:list_end].strip()
+        else:
+            st.markdown(f"No Python List content found!\n\n```{gpt_response3}```")
+            st.stop()
 
         df = pd.DataFrame(dict(
-            r=ast.literal_eval(gpt_response3),
+            r=ast.literal_eval(list_conent),
             theta=["직업적합도", "난이도", "소요비용", "소요기간", "예상수입", "업무강도"]))
         fig = px.line_polar(df, r="r", theta="theta", line_close=True)
         st.write(fig)
