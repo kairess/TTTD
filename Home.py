@@ -37,8 +37,7 @@ openai.api_key = config["openai_api_key"]
 ### MAIN ###
 st.header("Ticket to the Dream 🎫✨", divider='rainbow')
 
-with st.expander("서비스 소개", expanded=True):
-    st.write("""Ticket to the Dream 서비스는 당신의 꿈의 이루기 위해 안내를 주는 도우미입니다.\n\n왼쪽 사이드바에 여러분의 정보를 입력해주세요.""")
+st.info("Ticket to the Dream 서비스는 당신의 꿈의 이루기 위해 안내를 주는 도우미입니다.\n\n왼쪽 사이드바에 여러분의 정보를 입력해주세요.", icon="🔥")
 
 ##### Sidebar #####
 with st.sidebar:
