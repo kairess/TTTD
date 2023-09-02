@@ -109,6 +109,8 @@ if submit and name and job:
 
             gpt_response2 = gpt_response2["choices"][0]["message"]["content"]
 
+            print(gpt_response2)
+
             start_keyword = "```mermaid"
             end_keyword = "```"
 
@@ -142,21 +144,28 @@ if submit and name and job:
 
             gpt_response3 = gpt_response3["choices"][0]["message"]["content"]
 
-            start_keyword = "["
-            end_keyword = "]"
+            start_keyword = "{"
+            end_keyword = "}"
 
             if start_keyword in gpt_response3 and end_keyword in gpt_response3:
                 list_start = gpt_response3.find(start_keyword) + len(start_keyword)
                 list_end = gpt_response3.find(end_keyword, list_start)
-                list_conent = gpt_response3[list_start:list_end].strip()
+                list_content = gpt_response3[list_start-1:list_end+1].strip()
             else:
                 st.markdown(f"No Python List content found!\n\n```{gpt_response3}```")
 
+            print(list_content)
+
+            import json
+
+            list_content = json.loads(list_content)
+
             df = pd.DataFrame(dict(
-                r=ast.literal_eval(list_conent),
+                r=list_content["score"],
                 theta=["직업적합도", "난이도", "소요비용", "소요기간", "예상수입", "업무강도"]))
             fig = px.line_polar(df, r="r", theta="theta", line_close=True)
             st.write(fig)
+            st.markdown(list_content["description"])
 
     ### Answer 4 ###
     if is_answer[3]:
