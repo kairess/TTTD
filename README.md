@@ -2,7 +2,7 @@
 
 청소년 진로 탐색 상담 챗봇
 
-<video src="https://github.com/kairess/TTTD/assets/5242555/bb73249f-ec3a-408b-9e6b-97cd5ea0b38a" autoplay></video>
+https://github.com/kairess/TTTD/assets/5242555/bb73249f-ec3a-408b-9e6b-97cd5ea0b38a
 
 ![](result/01.jpg)
 
